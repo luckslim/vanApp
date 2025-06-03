@@ -1,5 +1,8 @@
 import styled from "styled-components";
-
+type ImageProps = {
+    src: any;
+    alt?: String;
+}
 export const ContainerProvider = styled.div`
 margin-top: 50px;
 display: grid;
@@ -54,4 +57,12 @@ export const ContainerProfilerConfirmed = styled.div`
     }
 
 
+`;
+export const ContainerImage = styled.img.attrs<ImageProps>(props => ({
+    src: props.src,
+    alt: props.alt,
+}))`
+width:50px;
+height: 50px;
+border-radius: 9999px;
 `;

@@ -5,9 +5,9 @@ import {
   ContainerText,
 } from "./style";
 type Props = {
-  name: string;
+  name: String | null | undefined;
   image: any;
-  dateTime: string;
+  dateTime?: String;
 };
 export function ContentCard({ name, image, dateTime }: Props) {
   return (

@@ -2,8 +2,18 @@
 import { UsersThreeIcon } from "@phosphor-icons/react";
 import { ButtonLogin } from "../components/buttonLogin";
 import { ContainerLogin, ContainerProvider } from "./style";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function LoginPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  useEffect(()=>{
+    if(status==="authenticated"){
+      router.push("/home")
+    }
+  },[status,router])
   return (
     <>
       <ContainerProvider>
@@ -13,13 +23,16 @@ export default function LoginPage() {
         </ContainerLogin>
         <p>Faça Login para acessar a lista da van</p>
         <ButtonLogin
+          onClick={()=>signIn("google")}
           title="Logar com  google "
           image="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/480px-Google_%22G%22_logo.svg.png"
         />
-        <ButtonLogin
+         <ButtonLogin
+          onClick={()=>signIn("instagram")}
           title="Logar com  Instagram"
           image="https://img.freepik.com/vetores-premium/icone-de-logotipo-de-vetor-do-instagram-logotipo-de-midia-social_901408-392.jpg?semt=ais_hybrid&w=740"
         />
+        {/*
         <ButtonLogin
           title="Logar com  Github"
           image="https://cdn-icons-png.flaticon.com/512/25/25231.png"
@@ -31,7 +44,7 @@ export default function LoginPage() {
         <ButtonLogin
           title="Logar com  X"
           image="https://png.pngtree.com/png-vector/20230817/ourlarge/pngtree-twitter-social-platform-icon-vector-png-image_9183350.png"
-        />
+        /> */}
       </ContainerProvider>
     </>
   );
