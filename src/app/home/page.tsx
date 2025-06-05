@@ -16,25 +16,30 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 type listProps = {
   name: String | null | undefined;
-  image: any;
-  dateTime: string;
+  image?: any;
+  dateTime?: string;
 };
 export default function HomePage() {
   const { data: session, status } = useSession();
-  const [seats]= useState(15)
-  const [list, setlist] = useState<listProps[]>([]);
+const [list, setlist] = useState<listProps[]>([]);
+  const [seats] = useState(15);
+  const ConfirmUserListed = list.some(
+    (user) => user.name === session?.user?.name
+  );
+  const totalSeats = seats - list.length;
   function handleListUser({ name, image, dateTime }: listProps) {
     if (!name) return;
-
     const alreadyListed = list.some((user) => user.name === name);
     if (alreadyListed) {
       console.log("Usuário já está na lista");
       return;
     }
     setlist([...list, { name, image, dateTime }]);
+    console.log(list);
   }
-  const totalSeats = seats - list.length
-  console.log(list);
+  function handleDeleteUserList({ name }: listProps) {
+    setlist((prevList) => prevList.filter((user) => user.name !== name));
+  }
   return (
     <ContainerProvider>
       <ContainerProfiler>
@@ -56,6 +61,7 @@ export default function HomePage() {
           }
           title="Listar Nome"
           type="PRIMARY"
+          disabled={ConfirmUserListed}
         />
       </ContainerProfiler>
       <ContainerProfilerVan>
@@ -65,12 +71,20 @@ export default function HomePage() {
       </ContainerProfilerVan>
       <ContainerProfilerConfirmed>
         <h1>Passageiros Confirmados:</h1>
+        {ConfirmUserListed && (
+          <Button
+            title="Retirar Nome"
+            type="SECONDARY"
+            onclick={() =>
+              handleDeleteUserList({
+                name: session?.user?.name,
+              })
+            }
+          />
+        )}
       </ContainerProfilerConfirmed>
       {list.map((profile) => (
-        <ContentCard
-          image={profile.image}
-          name={profile.name}
-        />
+        <ContentCard image={profile.image} name={profile.name} />
       ))}
     </ContainerProvider>
   );

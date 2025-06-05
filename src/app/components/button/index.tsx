@@ -2,11 +2,13 @@ import { ButtonTypeStyleProps, Container, Title } from "./style";
 type Props = {
     title: string,
     type?: ButtonTypeStyleProps;
-    onclick:()=>void;
+    disabled?: boolean;
+    onclick?:()=>void;
+
 }
-export function Button({title,type='PRIMARY',onclick}:Props){
+export function Button({title,type='PRIMARY',onclick, disabled }:Props){
     return(
-        <Container onClick={onclick} type={type}>
+        <Container disabled={disabled} onClick={onclick} type={type}>
             <Title>{title}</Title>
         </Container>
     )

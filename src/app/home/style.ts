@@ -50,6 +50,7 @@ export const ContainerProfilerConfirmed = styled.div`
     background-color: ${props=>props.theme['gray-200']};
     padding: 0.875rem;
     gap: 1rem;
+    display: grid;
     border-radius: 8px;
     width: 350px;
     h1{
